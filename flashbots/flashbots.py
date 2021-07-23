@@ -39,12 +39,12 @@ class FlashbotsTransactionResponse:
         self.target_block_number = target_block_number
 
     def wait(self) -> None:
-        """ Waits until the target block has been reached """
+        """Waits until the target block has been reached"""
         while self.w3.eth.blockNumber < self.target_block_number:
             time.sleep(1)
 
     def receipts(self) -> List[Union[_Hash32, HexBytes, HexStr]]:
-        """ Returns all the transaction receipts from the submitted bundle """
+        """Returns all the transaction receipts from the submitted bundle"""
         self.wait()
         return list(
             map(lambda tx: self.w3.eth.getTransactionReceipt(tx["hash"]), self.bundle)
@@ -59,7 +59,7 @@ class Flashbots(ModuleV2):
         self,
         bundled_transactions: List[Union[FlashbotsBundleTx, FlashbotsBundleRawTx]],
     ) -> List[HexBytes]:
-        """ Given a bundle of signed and unsigned transactions, it signs them all"""
+        """Given a bundle of signed and unsigned transactions, it signs them all"""
         nonces = {}
         signed_transactions = []
         for tx in bundled_transactions:
@@ -99,7 +99,7 @@ class Flashbots(ModuleV2):
         target_block_number: int,
         opts: Optional[FlashbotsOpts] = None,
     ) -> List[Any]:
-        """ Given a raw signed bundle, it packages it up with the block numbre and the timestamps """
+        """Given a raw signed bundle, it packages it up with the block numbre and the timestamps"""
         # convert to hex
         return [
             {
@@ -203,7 +203,7 @@ class Flashbots(ModuleV2):
         evm_timestamp,
         opts: Optional[FlashbotsOpts] = None,
     ) -> Any:
-        """ Given a raw signed bundle, it packages it up with the block number and the timestamps """
+        """Given a raw signed bundle, it packages it up with the block number and the timestamps"""
         inpt = [
             {
                 "txs": list(map(lambda x: x.hex(), signed_bundled_transactions)),
